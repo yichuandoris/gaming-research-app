@@ -18,6 +18,114 @@
             color: #333;
         }
 
+        /* 登入頁面樣式 */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-header {
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #4a5568;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .login-header .subtitle {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .login-form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .error-message {
+            color: #e53e3e;
+            background: #fed7d7;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .login-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e6fffa;
+            border-radius: 8px;
+            color: #2d3748;
+            font-size: 0.9em;
+        }
+
+        /* 主應用樣式 */
+        .main-app {
+            display: none;
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -28,6 +136,7 @@
             text-align: center;
             color: white;
             margin-bottom: 30px;
+            position: relative;
         }
 
         .header h1 {
@@ -48,6 +157,24 @@
             border-radius: 20px;
             display: inline-block;
             margin-top: 10px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         .dashboard {
@@ -395,245 +522,286 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+
+            .logout-btn {
+                position: static;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎰 線上博弈市場研究工具</h1>
-            <div class="subtitle">AI驅動的市場分析與趨勢預測平台</div>
-            <div class="status" id="systemStatus">
-                <span id="statusText">系統就緒</span> | 
-                <span id="lastUpdateTime">尚未更新</span>
+    <!-- 登入頁面 -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>🎰</h1>
+                <h1>線上博弈市場研究工具</h1>
+                <div class="subtitle">AI驅動的私人研究平台</div>
             </div>
-        </div>
-
-        <div class="dashboard">
-            <div class="card">
-                <h3><span class="icon">📊</span>收集狀態</h3>
-                <div class="metric">
-                    <div>
-                        <div class="metric-value" id="articleCount">0</div>
-                        <div class="metric-label">篇文章</div>
-                    </div>
-                    <div class="status-indicator status-completed" id="collectionStatus">準備就緒</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="collectionProgress"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3><span class="icon">🎯</span>相關性分析</h3>
-                <div class="metric">
-                    <span>高相關 (≥7分)</span>
-                    <span class="metric-value" id="highRelevance" style="font-size: 1.5em;">0</span>
-                </div>
-                <div class="metric">
-                    <span>中相關 (4-6分)</span>
-                    <span class="metric-value" id="mediumRelevance" style="font-size: 1.5em;">0</span>
-                </div>
-                <div class="metric">
-                    <span>低相關 (<4分)</span>
-                    <span class="metric-value" id="lowRelevance" style="font-size: 1.5em;">0</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3><span class="icon">📈</span>資料來源</h3>
-                <div class="metric">
-                    <span>iGaming Business</span>
-                    <span class="metric-value" id="source1Count" style="font-size: 1.2em;">0</span>
-                </div>
-                <div class="metric">
-                    <span>SBC News</span>
-                    <span class="metric-value" id="source2Count" style="font-size: 1.2em;">0</span>
-                </div>
-                <div class="metric">
-                    <span>其他來源</span>
-                    <span class="metric-value" id="source3Count" style="font-size: 1.2em;">0</span>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3><span class="icon">🔔</span>推播設定</h3>
-                <div class="metric">
-                    <span>通知狀態</span>
-                    <span class="metric-value" id="notificationStatus" style="font-size: 1.2em; color: #48bb78;">開啟</span>
-                </div>
-                <div class="metric">
-                    <span>更新頻率</span>
-                    <span class="metric-label" id="updateFrequency">每週</span>
-                </div>
-                <button class="btn btn-secondary" onclick="setupNotifications()" style="width: 100%; margin-top: 10px;">
-                    設定推播通知
-                </button>
-            </div>
-        </div>
-
-        <div class="control-panel">
-            <h3 style="margin-bottom: 20px; color: #4a5568;">🔧 研究設定與控制</h3>
             
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-button active" onclick="switchTab(event, 'basic-settings')">基本設定</button>
-                    <button class="tab-button" onclick="switchTab(event, 'advanced-settings')">進階設定</button>
-                    <button class="tab-button" onclick="switchTab(event, 'ai-settings')">AI分析</button>
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="password">請輸入存取密碼：</label>
+                    <input type="password" id="password" required placeholder="輸入您的專屬密碼">
                 </div>
-
-                <div id="basic-settings" class="tab-content active">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>研究主題</label>
-                            <select id="researchTopic">
-                                <option value="igaming">線上博弈</option>
-                                <option value="fintech">金融科技</option>
-                                <option value="blockchain">區塊鏈博弈</option>
-                                <option value="esports">電競博彩</option>
-                                <option value="mobile">手機博弈</option>
-                                <option value="custom">自定義主題</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>目標市場</label>
-                            <select id="targetMarket">
-                                <option value="asia">亞洲市場</option>
-                                <option value="global">全球市場</option>
-                                <option value="china">中國大陸</option>
-                                <option value="japan">日本</option>
-                                <option value="korea">韓國</option>
-                                <option value="singapore">新加坡</option>
-                                <option value="taiwan">台灣</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>收集頻率</label>
-                            <select id="collectionFrequency">
-                                <option value="realtime">即時收集</option>
-                                <option value="hourly">每小時</option>
-                                <option value="daily">每日</option>
-                                <option value="weekly">每週</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>推播頻率</label>
-                            <select id="pushFrequency">
-                                <option value="daily">每日摘要</option>
-                                <option value="weekly">每週報告</option>
-                                <option value="monthly">每月分析</option>
-                                <option value="important">重要事件即時</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="advanced-settings" class="tab-content">
-                    <div class="form-group">
-                        <label>自定義關鍵字 (每行一個)</label>
-                        <textarea id="customKeywords" rows="6" placeholder="igaming&#10;online gambling&#10;sports betting&#10;esports betting&#10;mobile gaming&#10;cryptocurrency gambling&#10;線上博弈&#10;體育博彩"></textarea>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>最低相關性分數</label>
-                            <input type="range" id="minRelevance" min="1" max="10" value="3" oninput="updateRelevanceValue(this.value)">
-                            <span id="relevanceValue">3</span> 分
-                        </div>
-
-                        <div class="form-group">
-                            <label>最大文章數量</label>
-                            <select id="maxArticles">
-                                <option value="20">20篇</option>
-                                <option value="50">50篇</option>
-                                <option value="100">100篇</option>
-                                <option value="200">200篇</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>排除關鍵字 (每行一個)</label>
-                        <textarea id="excludeKeywords" rows="4" placeholder="casino reviews&#10;bonus codes&#10;free spins&#10;promotional content"></textarea>
-                    </div>
-                </div>
-
-                <div id="ai-settings" class="tab-content">
-                    <div class="form-group">
-                        <label>OpenAI API 金鑰 (可選)</label>
-                        <input type="password" id="openaiKey" placeholder="sk-...">
-                        <small style="color: #718096;">用於AI分析和智能摘要功能</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label>分析深度</label>
-                        <select id="analysisDepth">
-                            <option value="basic">基本分析</option>
-                            <option value="detailed">詳細分析</option>
-                            <option value="comprehensive">全面分析</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>報告語言</label>
-                        <select id="reportLanguage">
-                            <option value="zh-tw">繁體中文</option>
-                            <option value="zh-cn">簡體中文</option>
-                            <option value="en">English</option>
-                            <option value="ja">日本語</option>
-                        </select>
-                    </div>
-                </div>
+                
+                <button type="submit" class="login-btn">
+                    🔓 進入研究工具
+                </button>
+            </form>
+            
+            <div id="errorMessage" class="error-message">
+                ❌ 密碼錯誤，請重新輸入
             </div>
-
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn" onclick="startCollection()" id="collectBtn">
-                    🔄 開始收集資料
-                </button>
-                <button class="btn btn-secondary" onclick="scheduleCollection()">
-                    ⏰ 設定自動收集
-                </button>
-                <button class="btn btn-danger" onclick="stopCollection()" style="display: none;" id="stopBtn">
-                    ⏹️ 停止收集
-                </button>
+            
+            <div class="login-info">
+                <strong>🔒 隱私保護說明</strong><br>
+                此工具專為市場研究設計，包含敏感的商業資訊。<br>
+                請確保您有授權存取此系統。
             </div>
         </div>
+    </div>
 
-        <div class="results-section">
-            <h3 style="margin-bottom: 20px; color: #4a5568;">📰 最新研究資料</h3>
-            
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-button active" onclick="switchTab(event, 'articles-view')">文章列表</button>
-                    <button class="tab-button" onclick="switchTab(event, 'summary-view')">智能摘要</button>
-                    <button class="tab-button" onclick="switchTab(event, 'trends-view')">趨勢分析</button>
+    <!-- 主應用程式 -->
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <div class="header">
+                <button class="logout-btn" onclick="logout()">🚪 登出</button>
+                <h1>🎰 線上博弈市場研究工具</h1>
+                <div class="subtitle">AI驅動的市場分析與趨勢預測平台</div>
+                <div class="status" id="systemStatus">
+                    <span id="statusText">系統就緒</span> | 
+                    <span id="lastUpdateTime">尚未更新</span>
+                </div>
+            </div>
+
+            <div class="dashboard">
+                <div class="card">
+                    <h3><span class="icon">📊</span>收集狀態</h3>
+                    <div class="metric">
+                        <div>
+                            <div class="metric-value" id="articleCount">0</div>
+                            <div class="metric-label">篇文章</div>
+                        </div>
+                        <div class="status-indicator status-completed" id="collectionStatus">準備就緒</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="collectionProgress"></div>
+                    </div>
                 </div>
 
-                <div id="articles-view" class="tab-content active">
-                    <div id="articleResults">
-                        <div class="loading" style="display: none;" id="loadingIndicator">
-                            <div class="spinner"></div>
-                            <p>正在收集最新市場資料...</p>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="loadingProgress"></div>
+                <div class="card">
+                    <h3><span class="icon">🎯</span>相關性分析</h3>
+                    <div class="metric">
+                        <span>高相關 (≥7分)</span>
+                        <span class="metric-value" id="highRelevance" style="font-size: 1.5em;">0</span>
+                    </div>
+                    <div class="metric">
+                        <span>中相關 (4-6分)</span>
+                        <span class="metric-value" id="mediumRelevance" style="font-size: 1.5em;">0</span>
+                    </div>
+                    <div class="metric">
+                        <span>低相關 (<4分)</span>
+                        <span class="metric-value" id="lowRelevance" style="font-size: 1.5em;">0</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">📈</span>資料來源</h3>
+                    <div class="metric">
+                        <span>iGaming Business</span>
+                        <span class="metric-value" id="source1Count" style="font-size: 1.2em;">0</span>
+                    </div>
+                    <div class="metric">
+                        <span>SBC News</span>
+                        <span class="metric-value" id="source2Count" style="font-size: 1.2em;">0</span>
+                    </div>
+                    <div class="metric">
+                        <span>其他來源</span>
+                        <span class="metric-value" id="source3Count" style="font-size: 1.2em;">0</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">🔔</span>推播設定</h3>
+                    <div class="metric">
+                        <span>通知狀態</span>
+                        <span class="metric-value" id="notificationStatus" style="font-size: 1.2em; color: #48bb78;">開啟</span>
+                    </div>
+                    <div class="metric">
+                        <span>更新頻率</span>
+                        <span class="metric-label" id="updateFrequency">每週</span>
+                    </div>
+                    <button class="btn btn-secondary" onclick="setupNotifications()" style="width: 100%; margin-top: 10px;">
+                        設定推播通知
+                    </button>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <h3 style="margin-bottom: 20px; color: #4a5568;">🔧 研究設定與控制</h3>
+                
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="switchTab(event, 'basic-settings')">基本設定</button>
+                        <button class="tab-button" onclick="switchTab(event, 'advanced-settings')">進階設定</button>
+                        <button class="tab-button" onclick="switchTab(event, 'ai-settings')">AI分析</button>
+                    </div>
+
+                    <div id="basic-settings" class="tab-content active">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>研究主題</label>
+                                <select id="researchTopic">
+                                    <option value="igaming">線上博弈</option>
+                                    <option value="fintech">金融科技</option>
+                                    <option value="blockchain">區塊鏈博弈</option>
+                                    <option value="esports">電競博彩</option>
+                                    <option value="mobile">手機博弈</option>
+                                    <option value="custom">自定義主題</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>目標市場</label>
+                                <select id="targetMarket">
+                                    <option value="asia">亞洲市場</option>
+                                    <option value="global">全球市場</option>
+                                    <option value="china">中國大陸</option>
+                                    <option value="japan">日本</option>
+                                    <option value="korea">韓國</option>
+                                    <option value="singapore">新加坡</option>
+                                    <option value="taiwan">台灣</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>收集頻率</label>
+                                <select id="collectionFrequency">
+                                    <option value="realtime">即時收集</option>
+                                    <option value="hourly">每小時</option>
+                                    <option value="daily">每日</option>
+                                    <option value="weekly">每週</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>推播頻率</label>
+                                <select id="pushFrequency">
+                                    <option value="daily">每日摘要</option>
+                                    <option value="weekly">每週報告</option>
+                                    <option value="monthly">每月分析</option>
+                                    <option value="important">重要事件即時</option>
+                                </select>
                             </div>
                         </div>
-                        <p style="color: #718096; text-align: center;">點擊"開始收集資料"來獲取最新市場資訊</p>
+                    </div>
+
+                    <div id="advanced-settings" class="tab-content">
+                        <div class="form-group">
+                            <label>自定義關鍵字 (每行一個)</label>
+                            <textarea id="customKeywords" rows="6" placeholder="igaming&#10;online gambling&#10;sports betting&#10;esports betting&#10;mobile gaming&#10;cryptocurrency gambling&#10;線上博弈&#10;體育博彩"></textarea>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>最低相關性分數</label>
+                                <input type="range" id="minRelevance" min="1" max="10" value="3" oninput="updateRelevanceValue(this.value)">
+                                <span id="relevanceValue">3</span> 分
+                            </div>
+
+                            <div class="form-group">
+                                <label>最大文章數量</label>
+                                <select id="maxArticles">
+                                    <option value="20">20篇</option>
+                                    <option value="50">50篇</option>
+                                    <option value="100">100篇</option>
+                                    <option value="200">200篇</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>排除關鍵字 (每行一個)</label>
+                            <textarea id="excludeKeywords" rows="4" placeholder="casino reviews&#10;bonus codes&#10;free spins&#10;promotional content"></textarea>
+                        </div>
+                    </div>
+
+                    <div id="ai-settings" class="tab-content">
+                        <div class="form-group">
+                            <label>OpenAI API 金鑰 (可選)</label>
+                            <input type="password" id="openaiKey" placeholder="sk-...">
+                            <small style="color: #718096;">用於AI分析和智能摘要功能</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>分析深度</label>
+                            <select id="analysisDepth">
+                                <option value="basic">基本分析</option>
+                                <option value="detailed">詳細分析</option>
+                                <option value="comprehensive">全面分析</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>報告語言</label>
+                            <select id="reportLanguage">
+                                <option value="zh-tw">繁體中文</option>
+                                <option value="zh-cn">簡體中文</option>
+                                <option value="en">English</option>
+                                <option value="ja">日本語</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div id="summary-view" class="tab-content">
-                    <div id="summaryContent">
-                        <p style="color: #718096; text-align: center;">AI摘要將在資料收集完成後生成</p>
-                    </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="startCollection()" id="collectBtn">
+                        🔄 開始收集資料
+                    </button>
+                    <button class="btn btn-secondary" onclick="scheduleCollection()">
+                        ⏰ 設定自動收集
+                    </button>
+                    <button class="btn btn-danger" onclick="stopCollection()" style="display: none;" id="stopBtn">
+                        ⏹️ 停止收集
+                    </button>
                 </div>
+            </div>
 
-                <div id="trends-view" class="tab-content">
-                    <div id="trendsContent">
-                        <p style="color: #718096; text-align: center;">趨勢分析將在收集足夠資料後顯示</p>
+            <div class="results-section">
+                <h3 style="margin-bottom: 20px; color: #4a5568;">📰 最新研究資料</h3>
+                
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="switchTab(event, 'articles-view')">文章列表</button>
+                        <button class="tab-button" onclick="switchTab(event, 'summary-view')">智能摘要</button>
+                        <button class="tab-button" onclick="switchTab(event, 'trends-view')">趨勢分析</button>
+                    </div>
+
+                    <div id="articles-view" class="tab-content active">
+                        <div id="articleResults">
+                            <div class="loading" style="display: none;" id="loadingIndicator">
+                                <div class="spinner"></div>
+                                <p>正在收集最新市場資料...</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="loadingProgress"></div>
+                                </div>
+                            </div>
+                            <p style="color: #718096; text-align: center;">點擊"開始收集資料"來獲取最新市場資訊</p>
+                        </div>
+                    </div>
+
+                    <div id="summary-view" class="tab-content">
+                        <div id="summaryContent">
+                            <p style="color: #718096; text-align: center;">AI摘要將在資料收集完成後生成</p>
+                        </div>
+                    </div>
+
+                    <div id="trends-view" class="tab-content">
+                        <div id="trendsContent">
+                            <p style="color: #718096; text-align: center;">趨勢分析將在收集足夠資料後顯示</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -645,12 +813,72 @@
     </div>
 
     <script>
-        // 全域變數
+        // 密碼設定 - 您可以修改這個密碼
+        const CORRECT_PASSWORD = "GamingResearch2024";
+
+        // 登入相關功能
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputPassword = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (inputPassword === CORRECT_PASSWORD) {
+                // 登入成功
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                // 儲存登入狀態
+                sessionStorage.setItem('isLoggedIn', 'true');
+                
+                // 初始化主應用
+                initializeApp();
+                
+                showNotification('✅ 登入成功！歡迎使用研究工具', 'success');
+            } else {
+                // 登入失敗
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                
+                // 3秒後隱藏錯誤訊息
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function logout() {
+            // 清除登入狀態
+            sessionStorage.removeItem('isLoggedIn');
+            
+            // 返回登入頁面
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            
+            // 清空密碼欄位
+            document.getElementById('password').value = '';
+            
+            showNotification('🚪 已安全登出', 'info');
+        }
+
+        function checkLoginStatus() {
+            // 檢查是否已登入
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            
+            if (isLoggedIn === 'true') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                initializeApp();
+            } else {
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+            }
+        }
+
+        // 主應用程式功能 (與之前相同)
         let articles = [];
         let isCollecting = false;
         let collectionInterval = null;
 
-        // RSS資料來源 (從您的原始程式碼轉換)
         const dataSources = [
             {
                 name: 'iGaming Business',
@@ -678,7 +906,6 @@
             }
         ];
 
-        // 關鍵字定義 (從您的原始程式碼)
         const keywords = {
             high_priority: [
                 'igaming', 'online gambling', 'sports betting', 'esports betting',
@@ -696,7 +923,6 @@
             ]
         };
 
-        // 工具函數
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notificationText');
@@ -727,15 +953,12 @@
         }
 
         function switchTab(event, tabName) {
-            // 隱藏所有tab內容
             const tabContents = document.querySelectorAll('.tab-content');
             tabContents.forEach(content => content.classList.remove('active'));
             
-            // 移除所有tab按鈕的active狀態
             const tabButtons = event.target.parentElement.querySelectorAll('.tab-button');
             tabButtons.forEach(button => button.classList.remove('active'));
             
-            // 顯示選中的tab內容
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
         }
@@ -744,39 +967,33 @@
             document.getElementById('relevanceValue').textContent = value;
         }
 
-        // 相關性計算 (從您的Python程式碼轉換)
         function calculateRelevance(title, content) {
             const text = (title + ' ' + content).toLowerCase();
             let score = 0;
             
-            // 高優先級關鍵字 (權重3)
             keywords.high_priority.forEach(keyword => {
                 const count = (text.match(new RegExp(keyword.toLowerCase(), 'g')) || []).length;
                 score += count * 3;
             });
             
-            // 中優先級關鍵字 (權重2)
             keywords.medium_priority.forEach(keyword => {
                 const count = (text.match(new RegExp(keyword.toLowerCase(), 'g')) || []).length;
                 score += count * 2;
             });
             
-            // 亞洲特定關鍵字 (權重1.5)
             keywords.asia_specific.forEach(keyword => {
                 const count = (text.match(new RegExp(keyword.toLowerCase(), 'g')) || []).length;
                 score += count * 1.5;
             });
             
-            // 標題權重加成
             const titleKeywords = keywords.high_priority.filter(kw => 
                 title.toLowerCase().includes(kw.toLowerCase())
             ).length;
             score += titleKeywords * 2;
             
-            return Math.min(score, 10); // 最高10分
+            return Math.min(score, 10);
         }
 
-        // 模擬RSS收集 (實際版本會連接真實RSS)
         async function simulateRSSCollection() {
             const mockArticles = [
                 {
@@ -791,4 +1008,381 @@
                     title: "新加坡政府公布線上博弈新規：強化消費者保護措施",
                     source: "SBC News",
                     date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-                    content: "新加坡金融管理局今日發布新的線上博弈監管框架，重點加強消費者保護和防範問題賭博。新規要求所有營運商必須實施更嚴格的身份驗證程序，並設立強制性的消費限額機制。此外，營運
+                    content: "新加坡金融管理局今日發布新的線上博弈監管框架，重點加強消費者保護和防範問題賭博。新規要求所有營運商必須實施更嚴格的身份驗證程序，並設立強制性的消費限額機制。此外，營運商需要提供24小時客服支援，並與心理健康專業機構合作。",
+                    url: "https://example.com/singapore-gaming-regulation-2024",
+                    reliability: 8
+                },
+                {
+                    title: "電競博彩在日本的發展現況：法規挑戰與市場機會並存",
+                    source: "CalvinAyre",
+                    date: new Date(Date.now() - 172800000).toISOString().split('T')[0],
+                    content: "隨著電競在日本的快速發展，電競博彩也逐漸受到關注。雖然目前日本對線上博彩的法規仍相對嚴格，但業界普遍認為電競博彩將是未來的重要趨勢。日本電競協會正與政府部門協商，希望建立合適的監管框架。預計2025年可能會有突破性進展。",
+                    url: "https://example.com/japan-esports-betting-2024",
+                    reliability: 7
+                },
+                {
+                    title: "區塊鏈技術革新線上博弈：透明度與安全性的雙重提升",
+                    source: "Yogonet",
+                    date: new Date(Date.now() - 259200000).toISOString().split('T')[0],
+                    content: "越來越多的線上博弈平台開始採用區塊鏈技術，以提升遊戲的透明度和公平性。智能合約的應用確保了遊戲結果的不可篡改性，而加密貨幣支付則提供了更高的隱私保護。業界專家認為，區塊鏈將成為線上博弈行業的重要基礎設施。",
+                    url: "https://example.com/blockchain-gaming-innovation-2024",
+                    reliability: 8
+                },
+                {
+                    title: "行動支付在亞洲博弈市場的普及率達到85%",
+                    source: "iGaming Business",
+                    date: new Date(Date.now() - 345600000).toISOString().split('T')[0],
+                    content: "最新研究顯示，行動支付在亞洲線上博弈市場的普及率已達85%，遠高於全球平均的62%。微信支付、支付寶和LINE Pay成為最受歡迎的支付方式。這一趨勢推動了手機博弈應用的快速發展，也為金融科技公司帶來新的商機。",
+                    url: "https://example.com/mobile-payment-asia-gaming-2024",
+                    reliability: 9
+                }
+            ];
+
+            return mockArticles;
+        }
+
+        async function startCollection() {
+            if (isCollecting) return;
+            
+            isCollecting = true;
+            updateStatus('collecting', '收集中...');
+            
+            const collectBtn = document.getElementById('collectBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            collectBtn.style.display = 'none';
+            stopBtn.style.display = 'inline-block';
+            loadingIndicator.style.display = 'block';
+            
+            try {
+                for (let i = 0; i <= 100; i += 10) {
+                    updateProgress(i);
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+                
+                const newArticles = await simulateRSSCollection();
+                
+                newArticles.forEach(article => {
+                    article.relevance_score = calculateRelevance(article.title, article.content);
+                });
+                
+                const minRelevance = document.getElementById('minRelevance').value;
+                const filteredArticles = newArticles.filter(article => 
+                    article.relevance_score >= minRelevance
+                );
+                
+                articles = filteredArticles;
+                
+                updateStatus('completed', '收集完成');
+                showNotification(`成功收集 ${articles.length} 篇相關文章！`, 'success');
+                updateStatistics();
+                displayArticles();
+                generateSummary();
+                
+            } catch (error) {
+                updateStatus('error', '收集失敗');
+                showNotification('資料收集失敗，請稍後重試', 'error');
+                console.error('Collection error:', error);
+            } finally {
+                collectBtn.style.display = 'inline-block';
+                stopBtn.style.display = 'none';
+                loadingIndicator.style.display = 'none';
+                isCollecting = false;
+                updateProgress(0);
+            }
+        }
+
+        function stopCollection() {
+            isCollecting = false;
+            updateStatus('completed', '已停止');
+            showNotification('資料收集已停止', 'info');
+            
+            const collectBtn = document.getElementById('collectBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            collectBtn.style.display = 'inline-block';
+            stopBtn.style.display = 'none';
+            loadingIndicator.style.display = 'none';
+            updateProgress(0);
+        }
+
+        function updateStatistics() {
+            document.getElementById('articleCount').textContent = articles.length;
+            
+            const highRelevance = articles.filter(a => a.relevance_score >= 7).length;
+            const mediumRelevance = articles.filter(a => a.relevance_score >= 4 && a.relevance_score < 7).length;
+            const lowRelevance = articles.filter(a => a.relevance_score < 4).length;
+            
+            document.getElementById('highRelevance').textContent = highRelevance;
+            document.getElementById('mediumRelevance').textContent = mediumRelevance;
+            document.getElementById('lowRelevance').textContent = lowRelevance;
+            
+            const sourceStats = {};
+            articles.forEach(article => {
+                sourceStats[article.source] = (sourceStats[article.source] || 0) + 1;
+            });
+            
+            document.getElementById('source1Count').textContent = sourceStats['iGaming Business'] || 0;
+            document.getElementById('source2Count').textContent = sourceStats['SBC News'] || 0;
+            document.getElementById('source3Count').textContent = (sourceStats['CalvinAyre'] || 0) + (sourceStats['Yogonet'] || 0);
+        }
+
+        function displayArticles() {
+            const container = document.getElementById('articleResults');
+            
+            if (articles.length === 0) {
+                container.innerHTML = '<p style="color: #718096; text-align: center;">暫無文章資料</p>';
+                return;
+            }
+            
+            const sortedArticles = [...articles].sort((a, b) => b.relevance_score - a.relevance_score);
+            
+            const articlesHtml = sortedArticles.map(article => {
+                const relevanceColor = article.relevance_score >= 7 ? '#48bb78' : 
+                                     article.relevance_score >= 4 ? '#f39c12' : '#e53e3e';
+                
+                return `
+                    <div class="article-item">
+                        <div class="article-title" onclick="toggleArticleDetails(this)">${article.title}</div>
+                        <div class="article-meta">
+                            <div>
+                                <span class="article-source">${article.source}</span>
+                                <span class="article-date">${article.date}</span>
+                            </div>
+                            <div class="relevance-score" style="background: ${relevanceColor};">
+                                相關性: ${article.relevance_score.toFixed(1)}/10
+                            </div>
+                        </div>
+                        <div class="article-summary">${article.content}</div>
+                        <div class="article-actions">
+                            <a href="${article.url}" target="_blank" class="article-link">📖 查看原文</a>
+                            <span style="color: #718096; font-size: 0.8em;">可信度: ${article.reliability}/10</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = articlesHtml;
+        }
+
+        function toggleArticleDetails(element) {
+            const summary = element.parentElement.querySelector('.article-summary');
+            const isExpanded = summary.style.maxHeight && summary.style.maxHeight !== '0px';
+            
+            if (isExpanded) {
+                summary.style.maxHeight = '3em';
+                summary.style.overflow = 'hidden';
+            } else {
+                summary.style.maxHeight = 'none';
+                summary.style.overflow = 'visible';
+            }
+        }
+
+        function generateSummary() {
+            const summaryContainer = document.getElementById('summaryContent');
+            
+            if (articles.length === 0) {
+                summaryContainer.innerHTML = '<p style="color: #718096; text-align: center;">尚無資料可供分析</p>';
+                return;
+            }
+            
+            const totalArticles = articles.length;
+            const avgRelevance = (articles.reduce((sum, a) => sum + a.relevance_score, 0) / totalArticles).toFixed(1);
+            const topSources = [...new Set(articles.map(a => a.source))];
+            
+            const allText = articles.map(a => a.title + ' ' + a.content).join(' ').toLowerCase();
+            const keywordCounts = {};
+            
+            [...keywords.high_priority, ...keywords.medium_priority].forEach(keyword => {
+                const matches = (allText.match(new RegExp(keyword.toLowerCase(), 'g')) || []).length;
+                if (matches > 0) {
+                    keywordCounts[keyword] = matches;
+                }
+            });
+            
+            const topKeywords = Object.entries(keywordCounts)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5);
+            
+            const summaryHtml = `
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: #2d3748; margin-bottom: 15px;">📊 資料概覽</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div>
+                            <strong>總文章數:</strong> ${totalArticles}篇<br>
+                            <strong>平均相關性:</strong> ${avgRelevance}/10<br>
+                            <strong>資料來源:</strong> ${topSources.length}個
+                        </div>
+                        <div>
+                            <strong>高相關文章:</strong> ${articles.filter(a => a.relevance_score >= 7).length}篇<br>
+                            <strong>最新文章:</strong> ${articles[0]?.date}<br>
+                            <strong>更新時間:</strong> ${new Date().toLocaleString('zh-TW')}
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: #2d3748; margin-bottom: 15px;">🔥 熱門趨勢</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        ${topKeywords.map(([keyword, count]) => 
+                            `<span style="background: #667eea; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                                ${keyword} (${count})
+                            </span>`
+                        ).join('')}
+                    </div>
+                </div>
+                
+                <div style="background: #f8fafc; padding: 20px; border-radius: 8px;">
+                    <h4 style="color: #2d3748; margin-bottom: 15px;">📈 市場洞察</h4>
+                    <ul style="line-height: 1.8; color: #4a5568;">
+                        <li>亞洲市場在線上博弈領域持續領先，行動端成為主要增長動力</li>
+                        <li>監管環境趨於完善，各國政府加強消費者保護措施</li>
+                        <li>新技術如區塊鏈、AI正在革新傳統博弈體驗</li>
+                        <li>電競博彩成為新興熱點，年輕用戶群體快速擴大</li>
+                        <li>支付方式多元化，加密貨幣和行動支付普及率持續上升</li>
+                    </ul>
+                </div>
+            `;
+            
+            summaryContainer.innerHTML = summaryHtml;
+        }
+
+        function setupNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showNotification('推播通知已啟用！', 'success');
+                        document.getElementById('notificationStatus').textContent = '開啟';
+                        document.getElementById('notificationStatus').style.color = '#48bb78';
+                        
+                        setTimeout(() => {
+                            new Notification('線上博弈市場研究工具', {
+                                body: '您的市場報告已準備就緒！發現多篇高相關性文章。',
+                                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🎰</text></svg>'
+                            });
+                        }, 3000);
+                    } else {
+                        showNotification('推播通知權限被拒絕', 'error');
+                        document.getElementById('notificationStatus').textContent = '關閉';
+                        document.getElementById('notificationStatus').style.color = '#e53e3e';
+                    }
+                });
+            } else {
+                showNotification('您的瀏覽器不支援推播通知', 'error');
+            }
+        }
+
+        function scheduleCollection() {
+            const frequency = document.getElementById('collectionFrequency').value;
+            let interval;
+            
+            switch(frequency) {
+                case 'hourly':
+                    interval = 60 * 60 * 1000;
+                    break;
+                case 'daily':
+                    interval = 24 * 60 * 60 * 1000;
+                    break;
+                case 'weekly':
+                    interval = 7 * 24 * 60 * 60 * 1000;
+                    break;
+                default:
+                    showNotification('即時收集模式已啟用', 'info');
+                    return;
+            }
+            
+            if (collectionInterval) {
+                clearInterval(collectionInterval);
+            }
+            
+            collectionInterval = setInterval(() => {
+                if (!isCollecting) {
+                    startCollection();
+                }
+            }, interval);
+            
+            showNotification(`自動收集已設定（${frequency === 'hourly' ? '每小時' : frequency === 'daily' ? '每日' : '每週'}）`, 'success');
+        }
+
+        function initializeApp() {
+            updateStatistics();
+            
+            document.getElementById('customKeywords').value = keywords.high_priority.join('\n');
+            
+            if ('Notification' in window && Notification.permission === 'granted') {
+                document.getElementById('notificationStatus').textContent = '開啟';
+                document.getElementById('notificationStatus').style.color = '#48bb78';
+            } else {
+                document.getElementById('notificationStatus').textContent = '關閉';
+                document.getElementById('notificationStatus').style.color = '#e53e3e';
+            }
+        }
+
+        function saveSettings() {
+            const settings = {
+                researchTopic: document.getElementById('researchTopic').value,
+                targetMarket: document.getElementById('targetMarket').value,
+                collectionFrequency: document.getElementById('collectionFrequency').value,
+                pushFrequency: document.getElementById('pushFrequency').value,
+                customKeywords: document.getElementById('customKeywords').value,
+                minRelevance: document.getElementById('minRelevance').value,
+                maxArticles: document.getElementById('maxArticles').value,
+                excludeKeywords: document.getElementById('excludeKeywords').value,
+                reportLanguage: document.getElementById('reportLanguage').value
+            };
+            
+            // 由於是密碼保護版本，使用sessionStorage而非localStorage
+            sessionStorage.setItem('gamingResearchSettings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const saved = sessionStorage.getItem('gamingResearchSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                Object.keys(settings).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = settings[key];
+                    }
+                });
+            }
+        }
+
+        // 安全相關：防止密碼被檢視
+        document.addEventListener('keydown', function(e) {
+            // 防止F12開發者工具
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+                showNotification('🔒 開發者工具已被禁用以保護隱私', 'warning');
+                return false;
+            }
+        });
+
+        // 防止右鍵查看源碼
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showNotification('🔒 右鍵功能已被禁用以保護隱私', 'warning');
+        });
+
+        // 監聽設定變更
+        document.addEventListener('change', function(e) {
+            if (e.target.matches('select, input, textarea')) {
+                saveSettings();
+            }
+        });
+
+        // 頁面載入時檢查登入狀態
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            loadSettings();
+        });
+
+        // 頁面關閉前清除敏感資訊
+        window.addEventListener('beforeunload', function() {
+            sessionStorage.removeItem('isLoggedIn');
+        });
+    </script>
+</body>
+</html>
